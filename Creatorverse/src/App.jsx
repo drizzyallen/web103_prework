@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ContentCreator from './components/contentCreator'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
@@ -9,7 +11,13 @@ function App() {
 
   return (
     <>
-      
+      <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<></>} />
+        <Route path="*" element={<></>} />
+      </Routes>
+    </Router>
     </>
   )
 }
