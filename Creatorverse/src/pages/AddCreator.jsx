@@ -24,18 +24,17 @@ const AddCreator = () => {
     const addCreator = async (event) => {
         event.preventDefault();
         
-        // await supabase
-        //     .from('creators')
-        //     .insert([
-        //         { 
-        //             name: creator.name, 
-        //             url: creator.url, 
-        //             description: creator.description, 
-        //             imageURL: creator.imageURL 
-        //         }
-        //     ]);
+        await supabase
+            .from('creators')
+            .insert([
+                { 
+                    name: creator.name, 
+                    url: creator.url, 
+                    description: creator.description, 
+                    imageURL: creator.imageURL 
+                }
+            ]);
             
-        alert(`Successfully added new creator: ${creator.name}! (Simulation)`);
         navigate('/'); // Redirect to the ShowCreators home page
     };
 

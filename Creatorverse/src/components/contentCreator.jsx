@@ -1,4 +1,6 @@
-const ContentCreator = ({ name, url, description, imageURL }) => {
+import { Link } from 'react-router-dom';
+
+const ContentCreator = ({ id, name, url, description, imageURL }) => {
     return (
         <article className="creator-card">
             <header>
@@ -9,11 +11,16 @@ const ContentCreator = ({ name, url, description, imageURL }) => {
                 <p>{description}</p>
             </main>
             <footer>
-                {url && (
-                    <a href={url} target="_blank" rel="noopener noreferrer" role="button">
-                        Visit Channel
-                    </a>
-                )}
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    {url && (
+                        <a href={url} target="_blank" rel="noopener noreferrer" role="button" className="contrast">
+                            Visit Channel
+                        </a>
+                    )}
+                    <Link to={`/edit/${id}`} role="button" className="secondary">
+                        Edit
+                    </Link>
+                </div>
             </footer>
         </article>
     );

@@ -14,43 +14,15 @@ const EditCreator = () => {
         imageURL: ''
     });
 
-    // Dummy data fallback matching view/show pages
-    const dummyCreators = [
-        {
-            id: 1,
-            name: "Allen",
-            url: "https://youtube.com/allen",
-            description: "A cool creator who makes tech videos! I love making videos about React, Supabase, and PicoCSS. If you want to learn web development, you are in the right place.",
-            imageURL: "https://via.placeholder.com/600x300"
-        },
-        {
-            id: 2,
-            name: "Sarah Creates",
-            url: "https://twitch.tv/sarah",
-            description: "Variety streamer and artist. Join me on my adventures playing indie games and drawing cool digital art!",
-            imageURL: "https://via.placeholder.com/600x300"
-        },
-        {
-            id: 3,
-            name: "Code Master",
-            url: "https://github.com/codemaster",
-            description: "Open source contributor and educator. Building tools for developers.",
-            imageURL: ""
-        }
-    ];
-
     useEffect(() => {
-        // We will replace this with an actual Supabase fetch later when the DB is ready
-        // const fetchCreator = async () => {
-        //     const { data } = await supabase.from('creators').select().eq('id', id).single();
-        //     setCreator(data);
-        // }
-        // fetchCreator();
-
-        const foundCreator = dummyCreators.find(c => c.id === parseInt(id));
-        if (foundCreator) {
-            setCreator(foundCreator);
+        const fetchCreator = async () => {
+            const { data } = await supabase.from('creators').select();
+            if (data) {
+                const foundCreator = data.filter(c => String(c.id) === String(id))[0];
+                if (foundCreator) setCreator(foundCreator);
+            }
         }
+        fetchCreator();
     }, [id]);
 
     const handleChange = (e) => {
@@ -63,26 +35,33 @@ const EditCreator = () => {
 
     const updateCreator = async (event) => {
         event.preventDefault();
-        
-        // await supabase
-        //     .from('creators')
-        //     .update({ 
-        //         name: creator.name, 
-        //         url: creator.url, 
-        //         description: creator.description, 
-        //         imageURL: creator.imageURL 
-        //     })
-        //     .eq('id', id);
+        const payload = { 
+            name: creator.name, 
+            description: creator.description,
+            // Supabase expects null, not empty strings, for optional URL fields
+            url: creator.url === "" ? null : creator.url, 
+            imageURL: creator.imageURL === "" ? null : creator.imageURL 
+        };
 
-        alert(`Simulated update for ${creator.name}!`);
-        navigate('/');
+        const { error } = await supabase
+            .from('creators')
+            .update(payload)
+            .eq('id', parseInt(id));
+        
+        if (error) {
+            console.error("Error updating:", error);
+            alert(`Error updating creator: ${error.message}`);
+        } else {
+            console.log("Success updated payload:", payload);
+            navigate('/');
+        }
     };
 
     const handleDelete = async () => {
         const confirmDelete = window.confirm("Are you sure you want to delete this creator?");
         if (confirmDelete) {
-            // await supabase.from('creators').delete().eq('id', id);
-            alert("Deleted! (Simulation)");
+            await supabase.from('creators').delete().eq('id', parseInt(id));
+            alert("Deleted!");
             navigate('/');
         }
     };

@@ -21,6 +21,7 @@ const ShowCreators = () => {
                     {creators.map((creator) => (
                         <div key={creator.id} style={{ marginBottom: '1rem' }}>
                             <ContentCreator
+                                id={creator.id}
                                 name={creator.name}
                                 url={creator.url}
                                 description={creator.description}

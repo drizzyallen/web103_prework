@@ -24,9 +24,10 @@ function App() {
           textAlign: 'center'
         }}>
           <h1 style={{ 
-            fontSize: '4rem', 
+            fontFamily: '"Fredoka", sans-serif',
+            fontSize: '5rem', 
             fontWeight: '900', 
-            letterSpacing: '5px',
+            letterSpacing: '4px',
             marginBottom: '2rem',
             textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
             textTransform: 'uppercase'
@@ -34,8 +35,8 @@ function App() {
             Creatorverse
           </h1>
           <div style={{ display: 'flex', gap: '1rem' }}>
-            <button className="contrast" onClick={() => window.location.href = "/"}>VIEW ALL CREATORS</button>
-            <button className="contrast" onClick={() => window.location.href = "/new"}>ADD A CREATOR</button>
+            <button onClick={() => window.location.href = "/"}>VIEW ALL CREATORS</button>
+            <button onClick={() => window.location.href = "/new"}>ADD A CREATOR</button>
           </div>
         </header>
 

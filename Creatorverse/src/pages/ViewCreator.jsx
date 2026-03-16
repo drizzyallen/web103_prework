@@ -7,48 +7,23 @@ const ViewCreator = () => {
     const navigate = useNavigate();
     const [creator, setCreator] = useState(null);
 
-    // Dummy data fallback for now
-    const dummyCreators = [
-        {
-            id: 1,
-            name: "Allen",
-            url: "https://youtube.com/allen",
-            description: "A cool creator who makes tech videos! I love making videos about React, Supabase, and PicoCSS. If you want to learn web development, you are in the right place.",
-            imageURL: "https://via.placeholder.com/600x300"
-        },
-        {
-            id: 2,
-            name: "Sarah Creates",
-            url: "https://twitch.tv/sarah",
-            description: "Variety streamer and artist. Join me on my adventures playing indie games and drawing cool digital art!",
-            imageURL: "https://via.placeholder.com/600x300"
-        },
-        {
-            id: 3,
-            name: "Code Master",
-            url: "https://github.com/codemaster",
-            description: "Open source contributor and educator. Building tools for developers.",
-        }
-    ];
-
     useEffect(() => {
-        // We will replace this with an actual Supabase fetch later when the DB is ready
-        // const fetchCreator = async () => {
-        //     const { data } = await supabase.from('creators').select().eq('id', id).single();
-        //     setCreator(data);
-        // }
-        // fetchCreator();
-
-        const foundCreator = dummyCreators.find(c => c.id === parseInt(id));
-        setCreator(foundCreator);
-        
+        const fetchCreator = async () => {
+            const { data } = await supabase.from('creators').select();
+            
+            // The instructions specifically requested using the filter() method
+            // Coercing both to strings handles cases where the DB or URL type differs
+            const foundCreator = data.filter(c => String(c.id) === String(id))[0];
+            setCreator(foundCreator);
+        }
+        fetchCreator();
     }, [id]);
 
     const handleDelete = async () => {
         const confirmDelete = window.confirm("Are you sure you want to delete this creator?");
         if (confirmDelete) {
-            // await supabase.from('creators').delete().eq('id', id);
-            alert("Deleted! (Simulation)");
+            await supabase.from('creators').delete().eq('id', parseInt(id));
+            alert("Deleted!");
             navigate('/');
         }
     };
